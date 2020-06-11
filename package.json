@@ -1,8 +1,7 @@
 {
-  "name": "serverless-boilerplate",
+  "name": "inspect-next-serverless",
   "version": "1.0.0",
-  "description": "Boilerplate for a Node Typescript serverless project",
-  "main": "handler.js",
+  "description": "Inspect next serverless with Node, Typescript and Serverless",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +9,9 @@
   "license": "ISC",
   "dependencies": {
     "@types/aws-lambda": "^8.10.55",
+    "@types/axios": "^0.14.0",
     "@types/node": "^14.0.13",
+    "axios": "^0.19.2",
     "fork-ts-checker-webpack-plugin": "^4.1.6",
     "serverless-offline": "^6.4.0",
     "serverless-webpack": "^5.3.2",

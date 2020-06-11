@@ -1,5 +1,5 @@
 service:
-  name: serverless-boilerplate
+  name: inspect-next-serverless
 
 custom:
   webpack:
@@ -22,15 +22,31 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
 
   environment:
-    DELETE_ME: Env variable
+    INSPECT_NEXT_PLACES_KEY: ${file(./config.js):getPlacesKey}
+    INSPECT_NEXT_GEOCODING_KEY: ${file(./config.js):getGeocodingKey}
+    INSPECT_NEXT_WEATHER_KEY: ${file(./config.js):getWeatherKey}
   logs:
     httpApi: true
 
 functions:
-  getExample:
-    handler: src/handlers/get.getExample
+  autocomplete:
+    handler: src/handlers/get.autocomplete
     events:
       - http:
-          path: getExample
+          path: autocomplete
+          method: get
+          cors: true
+  fiveDay:
+    handler: src/handlers/get.getFiveDay
+    events:
+      - http:
+          path: fiveDay
+          method: get
+          cors: true
+  getLocation:
+    handler: src/handlers/get.getLocation
+    events:
+      - http:
+          path: getLocation
           method: get
           cors: true
