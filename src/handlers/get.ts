@@ -3,7 +3,6 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
 import { isDefined } from "../common/support";
 import axios from "axios";
-import { stat } from "fs";
 
 export const autocomplete: APIGatewayProxyHandler = async (event) => {
   if (!isDefined(event.queryStringParameters.input)) {
@@ -23,6 +22,27 @@ export const autocomplete: APIGatewayProxyHandler = async (event) => {
         statusCode: res.status,
         body: JSON.stringify(res.data),
       };
+    });
+
+  return response;
+};
+
+export const getForecast: APIGatewayProxyHandler = async (
+  event
+): Promise<APIGatewayProxyResult> => {
+  if (!isDefined(event.queryStringParameters.address)) {
+    return {
+      statusCode: 500,
+      body: "No query parameter address",
+    };
+  }
+  let response;
+  await axios
+    .get(
+      `https://api.weatherapi.com/v1/forecast.json?key=f9eea78584a644fbab6201801200411&q=${event.queryStringParameters.address}&days=7`
+    )
+    .then(async ({ status, data }) => {
+      response = { statusCode: status, body: JSON.stringify(data) };
     });
 
   return response;

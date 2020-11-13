@@ -25,6 +25,7 @@ provider:
     INSPECT_NEXT_PLACES_KEY: ${file(./config.js):getPlacesKey}
     INSPECT_NEXT_GEOCODING_KEY: ${file(./config.js):getGeocodingKey}
     INSPECT_NEXT_WEATHER_KEY: ${file(./config.js):getWeatherKey}
+    INSPECT_NEXT_WEATHER_API_KEY: ${file(./config.js):getWeatherAPIKey}
   logs:
     httpApi: true
 
@@ -41,6 +42,13 @@ functions:
     events:
       - http:
           path: fiveDay
+          method: get
+          cors: true
+  getForecast:
+    handler: src/handlers/get.getForecast
+    events:
+      - http:
+          path: getForecast
           method: get
           cors: true
   getLocation:
