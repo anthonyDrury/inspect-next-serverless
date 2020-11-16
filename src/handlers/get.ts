@@ -31,15 +31,26 @@ export const getForecast: APIGatewayProxyHandler = async (
   event
 ): Promise<APIGatewayProxyResult> => {
   if (!isDefined(event.queryStringParameters.address)) {
-    return {
-      statusCode: 500,
-      body: "No query parameter address",
-    };
+    if (
+      !isDefined(event.queryStringParameters.lat) ||
+      !isDefined(event.queryStringParameters.lon)
+    ) {
+      return {
+        statusCode: 500,
+        body: "No query parameter address or (lat and lon)",
+      };
+    }
   }
+  const query = `${
+    isDefined(event.queryStringParameters.address)
+      ? event.queryStringParameters.address
+      : `${event.queryStringParameters.lat},${event.queryStringParameters.lon}`
+  }`;
+
   let response;
   await axios
     .get(
-      `https://api.weatherapi.com/v1/forecast.json?key=f9eea78584a644fbab6201801200411&q=${event.queryStringParameters.address}&days=7`
+      `https://api.weatherapi.com/v1/forecast.json?key=f9eea78584a644fbab6201801200411&q=${query}&days=7`
     )
     .then(async ({ status, data }) => {
       response = { statusCode: status, body: JSON.stringify(data) };
